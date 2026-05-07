@@ -63,3 +63,27 @@
         owner: ubuntu
         group: ubuntu
         mode: "0755"
+
+    - name: Create scripts directory
+      ansible.builtin.file:
+        path: /opt/devops-lab/scripts
+        state: directory
+        owner: ubuntu
+        group: ubuntu
+        mode: "0755"
+
+    - name: Copy Zabbix PostgreSQL backup script
+      ansible.builtin.copy:
+        src: ../scripts/backup-zabbix-postgres.sh
+        dest: /opt/devops-lab/scripts/backup-zabbix-postgres.sh
+        owner: ubuntu
+        group: ubuntu
+        mode: "0755"
+
+    - name: Configure daily Zabbix PostgreSQL backup cron
+      ansible.builtin.cron:
+        name: "Zabbix PostgreSQL backup"
+        user: ubuntu
+        minute: "0"
+        hour: "3"
+        job: "/opt/devops-lab/scripts/backup-zabbix-postgres.sh >> /opt/devops-lab/backups/zabbix-postgres/backup.log 2>&1"    
