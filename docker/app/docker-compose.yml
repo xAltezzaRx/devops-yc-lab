@@ -1,0 +1,22 @@
+services:
+  nginx:
+    image: nginx:alpine
+    container_name: devops-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+    networks:
+      - devops-net
+
+  app:
+    image: traefik/whoami
+    container_name: devops-whoami
+    restart: unless-stopped
+    networks:
+      - devops-net
+
+networks:
+  devops-net:
+    driver: bridge
