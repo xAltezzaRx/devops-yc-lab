@@ -33,8 +33,16 @@ jobs:
 
       - name: Deploy app stack
         run: |
-          ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} "cd /opt/devops-lab/docker/app && docker compose up -d"
+          ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} "
+            cd /opt/devops-lab/docker/app &&
+            docker compose down &&
+            docker compose up -d --build
+          "
 
       - name: Deploy Zabbix stack
         run: |
-          ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} "cd /opt/devops-lab/docker/zabbix && docker compose up -d"
+          ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} "
+            cd /opt/devops-lab/docker/zabbix &&
+            docker compose down &&
+            docker compose up -d
+          "
